@@ -1,0 +1,68 @@
+{
+  "name": "ccs-dashboard",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "flow": "flow",
+    "watch-admin": "watchify -t [ eslintify --quiet --passthrough errors --passthrough warnings ] -t [ babelify --presets [ es2015 ] ] src/app_ccs_admin.js --debug -o public/js/app_ccs_admin.js -v",
+    "build-js-admin": "browserify -t [ babelify --presets [ es2015 ] ] src/app_ccs_admin.js  | uglifyjs -mc warnings=false > public/js/app_ccs_admin.js",
+    "depPublic": "cd ./public && npm install",
+    "preinstall": "npm run depPublic"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-flow": "^6.23.0",
+    "babelify": "^7.3.0",
+    "bcryptjs": "^2.4.3",
+    "browserify": "^14.0.0",
+    "debowerify": "^1.5.0",
+    "del": "^2.2.2",
+    "env2": "^2.2.0",
+    "eslintify": "^3.1.0",
+    "exorcist": "^0.4.0",
+    "flow-bin": "^0.47.0",
+    "flow-remove-types": "^1.2.1",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-build": "^0.5.3",
+    "gulp-connect": "^5.0.0",
+    "gulp-exit": "0.0.2",
+    "gulp-flowtype": "^1.0.0",
+    "gulp-livereload": "^3.8.1",
+    "gulp-sourcemaps": "^2.4.1",
+    "gulp-uglify": "^2.1.2",
+    "gulp-util": "^3.0.8",
+    "jsdoc": "^3.4.3",
+    "run-sequence": "^1.2.2",
+    "tape": "^4.6.3",
+    "uglify-js": "^2.7.5",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.9.0"
+  },
+  "dependencies": {
+    "core-js": "^2.4.1",
+    "crypto-js": "^3.1.9-1",
+    "joi-browser": "^10.0.6",
+    "moment": "^2.17.1",
+    "mqtt": "^2.8.0",
+    "systemjs": "^0.20.12",
+    "urijs": "^1.18.10",
+    "websocket-stream": "^5.0.0",
+    "wolfy87-eventemitter": "^5.1.0"
+  },
+  "eslintConfig": {
+    "globals": {
+      "window": true,
+      "map": true,
+      "angular": true,
+      "Paho": true,
+      "google": true
+    }
+  }
+}

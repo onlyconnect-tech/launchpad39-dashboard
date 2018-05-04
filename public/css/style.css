@@ -1,0 +1,111 @@
+#wrapper { 
+  position: relative; 
+  height: 100%;
+}
+
+/* Always set the map height explicitly to define the size of the div
+ * element that contains the map. */
+#map-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* Optional: Makes the sample page fill the window. */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#header-container { position: absolute; top: 0px; left: 10px; }
+#header-container2 { position: absolute; top: 0px; left: 10px; z-index: 99; }
+#header-container3 { position: absolute; top: 0px; left: 10px; width: 300px;}
+
+#button-container3 { position: absolute; top: 50px; right: 10px; }
+
+#box_login_logout_buttons { position: absolute; top: 100px; right: 10px; }
+
+#box_name_cliente { position: absolute; top: 5px; left: 100px; display: none; }
+
+#msg-container3 { position: absolute; top: 10px; right: 50%; }
+
+.button-text-vr { direction: ltr; overflow: hidden; 
+  text-align: center; position: relative; color: rgb(0, 0, 0); 
+  font-family: Roboto, Arial, sans-serif; user-select: none; font-size: 12px; 
+  background-color: rgb(255, 255, 255); padding: 8px; border-bottom-left-radius: 2px; 
+  border-top-left-radius: 2px; -webkit-background-clip: padding-box; 
+  background-clip: padding-box; box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px; 
+  min-width: 148px; font-weight: 500;
+  }
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+li.ccs-button {
+  padding-bottom: 4px;
+}
+
+.ccs-box {
+  margin-top: 0.5em;		
+  padding-top: 1em;	
+  padding-bottom: 1em;
+  margin-bottom: 0.5em;
+  background-color: #ffffff
+}
+
+.ccs-row-box {
+  margin-top: 0.5em;    
+  /*padding-top: 1em; 
+  // padding-bottom: 1em;
+  margin-bottom: 0.5em;
+  background-color: 'red'
+  */
+}
+
+
+#ccs-modal-msgs {
+    border:4px solid #CCC;
+    width:800px;
+    /* height:50px; */
+    /* display:none; */
+    position:absolute; 
+    left:50%; 
+    top:50%;
+    margin:-25px 0 0 -50px;
+    border-radius:5px;
+    font: 10pt/12pt Courier, monospace
+}
+
+#ccs-modal-logs {
+    border:4px solid #CCC;
+    width:800px;
+    /* height:50px; */
+    /* display:none; */
+    position:absolute; 
+    left:50%; 
+    top:50%;
+    margin:-25px 0 0 -50px;
+    border-radius:5px;
+    font: 10pt/12pt Courier, monospace
+}
+
+.ccs-info-item {
+  font: 10pt/12pt Courier, monospace
+}
+
+.ccs-logs-item {
+  font: 10pt/12pt Courier, monospace
+}
+
+.ccs-msg-item {
+  font: 10pt/12pt Courier, monospace
+}
+
+.container-img-vehicles img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+}

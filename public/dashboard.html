@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Ccs VoltaRobots ADMIN</title>
+
+    <link rel="apple-touch-icon" sizes="57x57" href="./icons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="./icons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="./icons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="./icons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="./icons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="./icons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="./icons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="./icons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="./icons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="./icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./icons/favicon-16x16.png">
+    <link rel="manifest" href="./icons/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="./icons/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    
+    <!-- Bootstrap -->
+    <link href="./node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <link href="./css/style.css" rel="stylesheet">
+
+    <!--
+    <script type="text/javascript" src="./js-app/main.js"></script>
+    -->
+    <script type="text/javascript" src="./node_modules/systemjs/dist/system.js"></script>
+  </head>
+  
+  <body id="MainWrap" onload="checkIfPassword()" ng-app="voltarobots.ccs.dashboard-client" ng-controller="AppControllerClient as vm">
+    
+    <div id="map-canvas"></div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalLogin" tabindex="-1" role="dialog" aria-labelledby="modalLoginLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" onclick="clientApp.closeLoginForm()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="modalLoginLabel">Sign In</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row" id="formLoginErrors">
+                <div class="col-sm-12">
+                        <p class="bg-danger"></p>
+                </div>
+            </div>
+            <div class="form-group">
+              <label for="username" class="control-label">Username:</label>
+              <input type="text" class="form-control" id="username">
+            </div>
+            <div class="form-group">
+              <label for="password" class="control-label">Password:</label>
+              <input type="password" class="form-control" id="password"></input>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" onclick="clientApp.closeLoginForm()">Close</button>
+            <button type="button" class="btn btn-primary" onclick="clientApp.submitForm()">Login</button>
+          </div>
+        </div>
+      </div>
+    </div> 
+    <!-- end Modal -->
+
+    <!-- Single button -->
+    <div id="button-container3" class="btn-group">
+      <button type="button" class="btn btn-default dropdown-toggle button-text-vr" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span ng-show="vm.isMapMapView()">Map view (default)&nbsp;&nbsp;<span class="caret"></span></span>
+        <span ng-show="!vm.isMapMapView()">Multi-select&nbsp;&nbsp;<span class="caret"></span></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><a href="#map-view" ng-click="vm.doSelectMapView()">Map view (default)</a></li>
+        <li><a href="#multi-select" ng-click="vm.doSelectMultiSelect()">Multi-select</a></li>
+      </ul>
+    </div>
+
+    <div id="msg-container3" class="container-fluid">
+        <ul class="list-group" ng-show="vm.log()">
+            <li class="list-group-item" ng-class="vm.log().type">{{vm.log().msg}}</li>
+       </ul>
+    </div>
+
+    <div id="box_name_cliente" class="container-fluid">
+      <h3><span class="label label-info" id="label_name_cliente">BENVENUTO</span></h3>
+    </div>
+
+    <div id="box_login_logout_buttons">
+      <button id="btn_request_login" onclick="clientApp.activateLoginRequest()" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off" style="display: none;">
+        LOGIN
+      </button>
+      <button id="btn_request_logout" onclick="clientApp.activateLogoutRequest()" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off" style="display: none;">
+        LOGOUT
+      </button>
+    </div>
+
+    <div id="header-container3" class="container-fluid">
+
+          <div style="padding:0px;">
+              <img src="OnlyConnect.png" style="height:80px; margin-top:10px; padding:0px;">
+          </div>
+
+          <div class="row" ng-repeat="drone in vm.vehicleWatcher.listDronesObservedObj">
+                <div class="col-md-12 ccs-box">
+                  <div class="panel panel-info">
+                      <div class="panel-heading">
+                        <button type="button" class="close" ng-click="vm.vehicleWatcher.modelControllerMulti.callDroneUnobserved(drone.id)"><span>x</span></button>
+                        <h3 class="panel-title">Vehicle: {{ drone.id }}</h3>
+                      </div> <!-- end panel-heading -->
+                      <div class="panel-body">
+                           
+                           <div class="container-img-vehicles">
+                                <img src="./img/B1Rover-450x450.png">
+                           </div>
+                           
+                           <ul>
+                            <li>Type: <span id="dronetype">{{ drone.status.type || 'Multicopter' }}</span></li>
+                            <li>Owner(s): <span id="owners">?Nome Cognome?</span></li>
+                            <li>Observer(s): <span id="owners">?Public?</span></li>
+                            <li>Latitude: <span id="infolatitude">{{ drone.status.lat || 'NOT'}}</span></li> 
+                            <li>Longitude: <span id="infolongitude">{{ drone.status.lon || 'NOT'}}</span></li>          
+                            <li>Altitude: <span id="infoaltitude">{{ drone.status.alt || 'NOT'}}</span> m</li> 
+                            <li>Roll: <span id="inforoll">{{ drone.status.roll | toDegrees | number: 2 }}</span> deg</li>
+                            <li>Pitch: <span id="infopitch">{{ drone.status.pitch | toDegrees | number:2 }}</span> deg</li>  
+                            <li>Yaw: <span id="infoyaw">{{ drone.status.yaw | toDegrees | number:2 }}</span> deg</li> 
+                            <li>Ground Speed: <span id="infogroundspeed">{{ drone.status.groundspeed || 0 }}</span> m/s</li>  
+                            <li ng-show="vm.isMapMapView()">Last Command: <span id="lastcommand">{{ vm.lastCommand || 'NONE' }}</span></li>
+                          </ul>
+                      </div> <!-- end panel-body -->
+                  </div> <!-- end panel-info -->
+                </div>
+          </div>
+
+          <div class="row" ng-show="(vm.vehicleWatcher.listDronesObservedObj.length > 0) && vm.isMapMapView()">
+                <div class="col-md-12 ccs-box"> 
+                  <ul>
+                    <li class="ccs-button">
+                      <button id="arm" class='btn btn-default btn-block' ng-click="vm.armCommand()">Arm</button>
+                    </li>
+                    <li class="ccs-button">
+                      <button id="disarm" class='btn btn-default btn-block' ng-click="vm.disarmCommand()">Disarm</button>
+                    </li>        
+                    <li class="ccs-button">
+                      <button id="takeoff" class='btn btn-default btn-block' ng-click="vm.takeoffCommand()">TAKEOFF</button>
+                    </li>     
+                    <li class="ccs-button">
+                      <button id="land" class='btn btn-default btn-block' ng-click="vm.landnowCommand()">LAND NOW</button>
+                    </li>
+                    <li class="ccs-button">
+                      <button id="goto1" class='btn btn-default btn-block' ng-click="vm.goto1Command()">Goto1</button>
+                    </li>
+                    <li class="ccs-button">
+                      <button id="goto2" class='btn btn-default btn-block' ng-click="vm.goto2Command()">Goto2</button>
+                    </li>
+                    <li class="ccs-button">
+                      <button id="goto3" class='btn btn-default btn-block' ng-click="vm.goto3Command()">Goto3</button>
+                    </li>
+                    <li class="ccs-button">
+                      <button id="mission" class='btn btn-default btn-block' data-toggle="modal" data-target="#myModal" >Mission</button>
+                    </li>
+                  </ul>
+                </div>
+          </div>
+
+          <!-- Modal -->
+          <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title" id="myModalLabel">Insert mission coords</h4>
+                </div>
+                <div class="modal-body">
+                  <div class="row ccs-row-box">
+                    <div class="col-md-2"><strong>Coords:</strong></div>
+                    <div class="col-md-10"><textarea ng-model="vm.missionRequest" rows="30" cols="60">Coords here</textarea></div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="button" id="btnSubmitMission" class="btn btn-primary" data-dismiss="modal" onclick="clientApp.submitMissionTrigger()">Submit mission</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- END Modal -->
+
+    </div>
+
+    <script type="text/javascript">
+
+    function initialize() {
+
+      var newLat = 45.548274;
+      var newLon = 8.858273;
+
+      var bounds = new google.maps.LatLngBounds();
+
+      bounds.extend(new google.maps.LatLng(newLat, newLon));
+
+      bounds.extend(new google.maps.LatLng(newLat + 0.9, newLon));
+      bounds.extend(new google.maps.LatLng(newLat + 0.9, newLon + 0.9));
+      bounds.extend(new google.maps.LatLng(newLat - 0.9, newLon - 0.9));
+
+   
+      var myLatLng = new google.maps.LatLng(45.548274, 8.858273),
+          myOptions = {
+              zoom: 3,
+              center: myLatLng,
+              mapTypeControl: true,
+              mapTypeControlOptions: {
+                    style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+                    position: google.maps.ControlPosition.TOP_RIGHT
+                },
+              zoomControl: true,
+              zoomControlOptions: {
+                  position: google.maps.ControlPosition.RIGHT_CENTER
+              },
+              streetViewControl: true,
+              streetViewControlOptions: {
+                  position: google.maps.ControlPosition.RIGHT_BOTTOM
+              },
+              mapTypeId: google.maps.MapTypeId.TERRAIN, 
+              styles: [{"featureType":"water","elementType":"geometry","stylers":[{"color":"#e9e9e9"},{"lightness":17}]},{"featureType":"landscape","elementType":"geometry","stylers":[{"color":"#f5f5f5"},{"lightness":20}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffffff"},{"lightness":17}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#ffffff"},{"lightness":29},{"weight":0.2}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#ffffff"},{"lightness":18}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#ffffff"},{"lightness":16}]},{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#f5f5f5"},{"lightness":21}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#dedede"},{"lightness":21}]},{"elementType":"labels.text.stroke","stylers":[{"visibility":"on"},{"color":"#ffffff"},{"lightness":16}]},{"elementType":"labels.text.fill","stylers":[{"saturation":36},{"color":"#333333"},{"lightness":40}]},{"elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"geometry","stylers":[{"color":"#f2f2f2"},{"lightness":19}]},{"featureType":"administrative","elementType":"geometry.fill","stylers":[{"color":"#fefefe"},{"lightness":20}]},{"featureType":"administrative","elementType":"geometry.stroke","stylers":[{"color":"#fefefe"},{"lightness":17},{"weight":1.2}]}]
+          },
+
+          map = new google.maps.Map( document.getElementById('map-canvas'), myOptions );
+
+          map.fitBounds(bounds);
+          map.setZoom();
+
+          // to become global so in app.js
+          window.map = map;
+
+        } 
+        // end initialize 
+
+       // var clientApp = null;
+
+       var clientApp = null;
+
+       function checkIfPassword() {
+          // load modal
+
+          SystemJS.import('./js-app/config_app.js').then(
+            function () {
+
+              SystemJS.import('./js-app/main.js').then(
+                function () {
+                  console.log('DO SIMPLE APP!!');
+
+                  clientApp = new clientAppModule.ClientApp(configApp.url_service);
+
+                  clientApp.activateLoginRequest();
+                  console.log('DO ASK SIMLE APP EXIT!!');
+                }
+              );
+
+            }
+          );
+
+
+        };
+
+     </script>
+     <script async defer type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGfl-ph0jAZSJl4sKOXchXJnz_p59CRrI&callback=initialize"></script>
+    
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="./node_modules/jquery/dist/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <script src="./node_modules/angular/angular.min.js"></script>
+    
+    <script id="ccs-app-controller" src="./js/app_ccs_client.js?id=app"></script>
+  </body>
+</html>

@@ -1,0 +1,3 @@
+[{"nms":1412638168724,"location":"39.09972,-94.57853","geoJSON":{"type":"Point","coordinates":[-94.57853,39.09972]},"pressure":111,"engine_temperature":213,"cargo_temperature":41,"rpm":2216,"speed":18,"battery":12.3}]
+
+[{"nms":1412638168724, "geoJSON":{"type":"Point","coordinates":[-94.57853,39.09972]}]
