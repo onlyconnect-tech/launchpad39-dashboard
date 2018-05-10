@@ -146,9 +146,10 @@ class VehicleWatcher {
 
     // '/vehicles';
     var topicNameVehicles = '/vehicles' + '/' + customerID;
-
+    var topicRequestNameVehicles = '/request-vehicles' + '/' + customerID;
+    
     var client = this.createMqttClient(clientID, this.mqttConfig.endpoint,
-      this.mqttConfig.accessKey, this.mqttConfig.secretKey, this.mqttConfig.regionName, topicNameVehicles);
+      this.mqttConfig.accessKey, this.mqttConfig.secretKey, this.mqttConfig.regionName, topicNameVehicles, topicRequestNameVehicles);
 
     this.client = client;
 
@@ -255,7 +256,7 @@ class VehicleWatcher {
    * @return {void} [description]
    */
 
-  createMqttClient(clientID, endpoint, accessKey, secretKey, regionName, topicNameVehicles) {
+  createMqttClient(clientID, endpoint, accessKey, secretKey, regionName, topicNameVehicles, topicRequestNameVehicles) {
 
     var options = {
       clientId: clientID,
@@ -354,6 +355,8 @@ class VehicleWatcher {
 
       console.log('DOING SUBSCRIBE!!!');
       self.subscribeQueueVehicles(client, topicNameVehicles);
+
+      self.requestingVehiclesForCustomer(client, topicRequestNameVehicles);
 
     });
 
@@ -494,6 +497,26 @@ class VehicleWatcher {
       qos: 0
     });
   }
+
+  /**
+   * @access private
+   * 
+   */
+  
+  requestingVehiclesForCustomer(client, topicRequestNameVehicles) {
+    
+    var requestVehiclesCustomerID = {jsonrpc: '2.0', method: 'request-vehicles' };
+
+    console.log('* requestingVehiclesForCustomer:', topicRequestNameVehicles, ', message:', requestVehiclesCustomerID);
+
+    try {
+      client.publish(topicRequestNameVehicles, requestVehiclesCustomerID);
+    } catch(e) {
+      console.log('ERROR publiching on topic:', topicRequestNameVehicles, '- command:', requestVehiclesCustomerID, 
+      '- ERROR:', e);
+    }
+  }
+  
 
   /**
    * [publishMsg description]

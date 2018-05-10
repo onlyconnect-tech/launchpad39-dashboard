@@ -23,8 +23,7 @@ var clientAppModule = function () {
         var self = this;
 
         if (data.statusCode == 200) {
-            $('#modalLogin').modal('hide');
-
+            
             this.clientID = data.clientID;
             this.customerID = data.customerID;
 
@@ -62,8 +61,6 @@ var clientAppModule = function () {
             document.getElementById('box_name_cliente').style.display = 'block';
             $('#label_name_cliente').text('CUSTOMER: ' + this.customerID);
 
-            // fai apparire pulsante LOGOUT
-            document.getElementById('btn_request_logout').style.display = 'block';
 
         } else {
             $('#modalLogin #formLoginErrors .bg-danger').text('Invalid credentials');
@@ -80,9 +77,9 @@ var clientAppModule = function () {
 
 
 
-    ClientApp.prototype.submitForm = function() {
-        var username = $('#username').val();
-        var password = $('#password').val();
+    ClientApp.prototype.doLoginDemo = function() {
+        var username = 'demo';
+        var password = 'demo';
 
         var self = this;
 
@@ -98,13 +95,6 @@ var clientAppModule = function () {
             error: this.errorLogin.bind(this)
         });
 
-    };
-
-    ClientApp.prototype.closeLoginForm = function() {
-        $('#modalLogin').modal('hide');
-
-        // fai apparire pulsante LOGIN
-        document.getElementById('btn_request_login').style.display = 'block';
     };
 
     ClientApp.prototype.submitMissionTrigger = function() {
@@ -149,19 +139,6 @@ var clientAppModule = function () {
 
     };
         
-    ClientApp.prototype.activateLoginRequest = function() {
-
-        document.getElementById('btn_request_login').style.display = 'none';
-
-        // clean form
-        $('#modalLogin #formLoginErrors .bg-danger').text('');
-        $('#username').val('');
-        $('#password').val('');
-
-        $('#modalLogin').modal('show');
-
-    };
-
     return {
         ClientApp: ClientApp
     };

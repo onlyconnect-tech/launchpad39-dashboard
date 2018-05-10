@@ -40,7 +40,7 @@ fi
 
 # server_ccs_dashboard_backend.js
 
-process_id_dashboard_backend=`/bin/ps -fe | grep "server_ccs_dashboard_backend.js" | grep -v "grep" | grep -v "mate-terminal" | awk '{print $2}'`
+process_id_dashboard_backend=`/bin/ps -fe | grep "backend_server.js" | grep -v "grep" | grep -v "mate-terminal" | awk '{print $2}'`
 
 if [ -n "$process_id_dashboard_backend" ]; then
     echo "KILLING server_dashboard_backend - PID:$process_id_dashboard_backend"

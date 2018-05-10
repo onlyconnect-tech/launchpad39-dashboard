@@ -48,13 +48,7 @@ During `gulp configure` thask .env variable values are substitutes in js files, 
 
 [Styling & Customizing File Inputs the Smart Way](https://tympanus.net/codrops/2015/09/15/styling-customizing-file-inputs-smart-way/) (NO MORE USED). Now used .env mechanism.
 
-## COOPERATING PROJECTS
 
-* [https://bitbucket.org/navamai/ccs-dashboard-server](https://bitbucket.org/navamai/ccs-dashboard-server) exposing services to *ccs-dashboard*
-
-* [https://navamai@bitbucket.org/navamai/ccs-dashboard-permission-service.git](https://navamai@bitbucket.org/navamai/ccs-dashboard-permission-service.git) for authentication.
-
-* [https://bitbucket.org/navamai/ccs-dashboard-admin-vehicles](https://bitbucket.org/navamai/ccs-dashboard-admin-vehicles) admin Owners and vehicles.
 
 
 

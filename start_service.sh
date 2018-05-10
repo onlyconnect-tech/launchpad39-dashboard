@@ -57,12 +57,12 @@ fi
 
 echo "starting server_ccs_dashboard_backend"
 
-process_id_dashboard_backend=`/bin/ps -fe | grep "server_ccs_dashboard_backend.js" | grep -v "grep" | awk '{print $2}'`
+process_id_dashboard_backend=`/bin/ps -fe | grep "backend_server.js" | grep -v "grep" | awk '{print $2}'`
 
 if [ -n "$process_id_dashboard_backend" ]; then
     echo "server_dashboard_backend - PID:$process_id_dashboard_backend - yet running"
 else
-    mate-terminal --title="CCS_DASHBOARD_BACKEND" -e "node server_ccs_dashboard_backend.js" &
+    mate-terminal --title="CCS_DASHBOARD_BACKEND" -e "node backend_server.js" &
 fi
 
 

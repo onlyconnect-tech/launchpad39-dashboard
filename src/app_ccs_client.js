@@ -207,13 +207,3 @@ angular.module('voltarobots.ccs.dashboard-client').filter('toDegrees', function 
 
 });
 
-if (queryObj.id == 'demo') {
-
-  setTimeout(function () {
-    console.log('**************** STARTING DEMO ***********************');
-    angular.element(document.getElementById('MainWrap')).scope().vm.doStartVehicleWatcher('demo-clientid-' +
-      Math.random().toString(36).substring(7), 'demo');
-  }, 3000);
-
-
-}
