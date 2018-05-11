@@ -187,9 +187,9 @@ const queryObj = uri.search(true);
 
 AppControllerClient.$inject = ['$scope', 'mqttConfig'];
 
-angular.module('voltarobots.ccs.dashboard-client', []).controller('AppControllerClient', AppControllerClient);
+angular.module('onlyconnect.ccs.dashboard-client', []).controller('AppControllerClient', AppControllerClient);
 
-angular.module('voltarobots.ccs.dashboard-client').factory('mqttConfig', function () {
+angular.module('onlyconnect.ccs.dashboard-client').factory('mqttConfig', function () {
   return {
     endpoint: configMqtt.endpoint,
     accessKey: configMqtt.accessKey,
@@ -198,7 +198,7 @@ angular.module('voltarobots.ccs.dashboard-client').factory('mqttConfig', functio
   };
 });
 
-angular.module('voltarobots.ccs.dashboard-client').filter('toDegrees', function () {
+angular.module('onlyconnect.ccs.dashboard-client').filter('toDegrees', function () {
 
   return function (radians) {
 

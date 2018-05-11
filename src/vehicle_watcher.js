@@ -356,7 +356,7 @@ class VehicleWatcher {
       console.log('DOING SUBSCRIBE!!!');
       self.subscribeQueueVehicles(client, topicNameVehicles);
 
-      self.requestingVehiclesForCustomer(client, topicRequestNameVehicles);
+      self.requestingVehiclesForCustomer(client, topicRequestNameVehicles, clientID);
 
     });
 
@@ -469,7 +469,9 @@ class VehicleWatcher {
         qos: 0
       });
 
-      var historyCommand = {jsonrpc: '2.0', method: 'history' };
+      var historyCommand = {jsonrpc: '2.0', method: 'history', id: this.clientID };
+
+      console.log("ASKING HISTORY on queue:", queueName + '/commands', ", message: ", historyCommand);
 
       try {
         this.client.publish(queueName + '/commands', historyCommand);
@@ -503,11 +505,11 @@ class VehicleWatcher {
    * 
    */
   
-  requestingVehiclesForCustomer(client, topicRequestNameVehicles) {
+  requestingVehiclesForCustomer(client, topicRequestNameVehicles, clientID) {
     
-    var requestVehiclesCustomerID = {jsonrpc: '2.0', method: 'request-vehicles' };
+    var requestVehiclesCustomerID = {jsonrpc: '2.0', method: 'request-vehicles', id: clientID };
 
-    console.log('* requestingVehiclesForCustomer:', topicRequestNameVehicles, ', message:', requestVehiclesCustomerID);
+    console.log('* requestingVehiclesForCustomer:', topicRequestNameVehicles, ', message:', requestVehiclesCustomerID, ', key:', clientID);
 
     try {
       client.publish(topicRequestNameVehicles, requestVehiclesCustomerID);
