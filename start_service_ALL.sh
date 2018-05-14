@@ -7,6 +7,16 @@ page_size=`getconf PAGESIZE`
 #########################
 curr_dir=`pwd`
 
+echo "starting http-server"
+
+process_id=`/bin/ps -fe | grep "http-server" | grep -v "grep" | awk '{print $2}'`
+
+if [ -n "$process_id" ]; then
+    echo "http-server - PID:$process_id - yet running"
+else
+    mate-terminal --title="DASHBOARD WEB SERVER" -e "http-server" &
+fi
+
 cd ../launchpad39-admin-vehicles
 
 echo "starting server-admin-vehicles"

@@ -1,0 +1,4 @@
+# eerythings except .gitignore
+*
+
+!.gitignore

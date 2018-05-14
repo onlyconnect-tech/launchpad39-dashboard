@@ -6,8 +6,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "flow": "flow",
-    "watch-admin": "watchify -t [ eslintify --quiet --passthrough errors --passthrough warnings ] -t [ babelify --presets [ es2015 ] ] src/app_ccs_admin.js --debug -o public/js/app_ccs_admin.js -v",
-    "build-js-admin": "browserify -t [ babelify --presets [ es2015 ] ] src/app_ccs_admin.js  | uglifyjs -mc warnings=false > public/js/app_ccs_admin.js",
     "depPublic": "cd ./public && npm install",
     "preinstall": "npm run depPublic"
   },
@@ -37,8 +35,10 @@
     "gulp-sourcemaps": "^2.4.1",
     "gulp-uglify": "^2.1.2",
     "gulp-util": "^3.0.8",
+    "gulp-zip": "^4.1.0",
     "jsdoc": "^3.4.3",
-    "run-sequence": "^1.2.2",
+    "merge-stream": "^1.0.1",
+    "run-sequence": "^2.2.1",
     "tape": "^4.6.3",
     "uglify-js": "^2.7.5",
     "vinyl-buffer": "^1.0.0",
