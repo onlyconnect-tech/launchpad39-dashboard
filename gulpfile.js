@@ -3,25 +3,26 @@ const babel = require('gulp-babel');
 
 
 const Del    = require('del');  
-const RunSequence = require('run-sequence');
 
-var sourcemaps = require('gulp-sourcemaps');
-var source = require('vinyl-source-stream');
-var buffer = require('vinyl-buffer');
-var browserify = require('browserify');
-var watchify = require('watchify');
-var uglify = require('gulp-uglify');
-var babelify = require('babelify');
-var gutil = require('gulp-util');
+const sourcemaps = require('gulp-sourcemaps');
+const source = require('vinyl-source-stream');
+const buffer = require('vinyl-buffer');
+const browserify = require('browserify');
+const watchify = require('watchify');
+const uglify = require('gulp-uglify');
+const babelify = require('babelify');
+const gutil = require('gulp-util');
 
-var exit = require('gulp-exit');
+const exit = require('gulp-exit');
 
-var livereload = require('gulp-livereload');
-var connect = require('gulp-connect');
+const livereload = require('gulp-livereload');
+const connect = require('gulp-connect');
 
-var build = require('gulp-build');
+const build = require('gulp-build');
 
-var flow = require('gulp-flowtype');
+const flow = require('gulp-flowtype');
+
+const zip = require('gulp-zip');
 
 /**
  * Build Settings
@@ -54,9 +55,9 @@ var settings = {
  */
 
 Gulp.task('clean', function(cb) {  
-  Del([
+  return Del([
     settings.destFolder + '/**/*'
-  ], cb);
+  ]);
 });
 
 function compile(watch) {
@@ -105,20 +106,22 @@ Gulp.task('connect', function() {
 
 // https://gist.github.com/danharper/3ca2273125f500429945
 
-Gulp.task('default', function(cb) {  
-  RunSequence([
-    'clean',
-    'config',
-    'build'
-  ], cb);
-});
+Gulp.task('default', [
+  'clean',
+  'config',
+  'build'
+]);
 
-Gulp.task('dev', function(cb) {  
-  RunSequence([
-    'clean',
-    'config',
-    'watch'
-  ], cb);
+Gulp.task('dev', [
+  'clean',
+  'config',
+  'watch'
+]);
+
+Gulp.task('distribution', ['default'], function(cb) {
+  return Gulp.src('./public/**')
+    .pipe(zip('launchpad39-dashboard.zip'))
+    .pipe(Gulp.dest('distribution'))
 });
 
 function printConfigurationsMqtt(endpointValue, accessKeyValue, secretKeyValue, regionName) {
