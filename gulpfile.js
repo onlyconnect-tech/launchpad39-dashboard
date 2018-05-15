@@ -22,6 +22,7 @@ const build = require('gulp-build');
 
 const flow = require('gulp-flowtype');
 
+const merge = require('merge-stream');
 const zip = require('gulp-zip');
 
 /**
@@ -56,15 +57,20 @@ var settings = {
 
 Gulp.task('clean', function(cb) {  
   return Del([
-    settings.destFolder + '/**/*'
-  ]);
+      settings.destFolder + '/**/*'
+  , './public/js-app/config_app.js', 
+    './distribution/launchpad39-dashboard.zip'
+    ]).then(paths => {
+      console.log('Deleted files and folders:\n', paths.join('\n'));
+      return paths;
+  });
 });
 
-function compile(watch) {
+function compile(watch, cb) {
   var bundler = watchify(browserify('./src/app_ccs_client.js', { debug: true }).transform(babelify)); 
 
   function rebundle() {
-    return bundler.bundle()
+    var stream = bundler.bundle()
       .on('error', function(err) { console.error(err); this.emit('end'); })
       .pipe(source('app_ccs_client.js'))
       .pipe(buffer())
@@ -72,11 +78,16 @@ function compile(watch) {
       .pipe(uglify({ mangle: true, compress: true }))
       .on('error', gutil.log)
       .pipe(sourcemaps.write('./'))
-      .pipe(Gulp.dest(settings.destFolder))
-      .pipe(livereload({ start: true }));
+      .pipe(Gulp.dest(settings.destFolder));
+    
+    if(watch)
+      stream.pipe(livereload({ start: true }));
+
+    return stream;
   }
 
   if (watch) {
+    // watching
     bundler.on('update', function () {
         console.log('-> bundling...');
         rebundle();
@@ -84,16 +95,12 @@ function compile(watch) {
 
     rebundle();
   } else {
-      rebundle().pipe(exit());
+     return rebundle().pipe(exit());
   }
 }
 
-function watch() {
-  return compile(true);
-}
-
-Gulp.task('build', function() { return compile(); });
-Gulp.task('watch', function() { return watch(); });
+Gulp.task('build', function(cb) { return compile(false, cb); });
+Gulp.task('watch', function(cb) { return compile(true); });
 
 Gulp.task('connect', function() { 
   connect.server({
@@ -118,8 +125,8 @@ Gulp.task('dev', [
   'watch'
 ]);
 
-Gulp.task('distribution', ['default'], function(cb) {
-  return Gulp.src('./public/**')
+Gulp.task('zip',  function(cb) {
+  return Gulp.src(['./public/**', '!./public/package.json', '!./public/package-lock.json'])
     .pipe(zip('launchpad39-dashboard.zip'))
     .pipe(Gulp.dest('distribution'))
 });
@@ -127,12 +134,6 @@ Gulp.task('distribution', ['default'], function(cb) {
 function printConfigurationsMqtt(endpointValue, accessKeyValue, secretKeyValue, regionName) {
   console.log('CONFIGURATIONS MQTT:\n{endpoint:', endpointValue, '- accessKey:', accessKeyValue, 
     '- secretKey:', secretKeyValue, '- regionName:', regionName, '}');
-}
-
-// urlEndpointAuthService
-
-function printUrlEndpointAuthService(urlEndpointAuthService) {
-  console.log('CONFIGURATION AUTH SERVICE:\nurlEndpointAuthService:', urlEndpointAuthService);
 }
 
 /**
@@ -151,28 +152,33 @@ Gulp.task('config', function() {
 
     if(!endpointValue && !accessKeyValue && !secretKeyValue && !regionName) {
       console.error('NO MQTT CONFIGURATIONS, check .env file!!!');
-      return;
+      return process.exit(1);
     }
 
     printConfigurationsMqtt(endpointValue, accessKeyValue, secretKeyValue, regionName);
 
-    Gulp.src('config/config_mqtt.js')
+    console.log('FROM "config/config_mqtt.js" template --> "src/config_mqtt.js"');
+
+    var stream1 = Gulp.src('config/config_mqtt.js')
       .pipe(build({ ENDPOINT: endpointValue,  ACCESS_KEY: accessKeyValue, 
         SECRET_KEY: secretKeyValue, REGION_NAME: regionName }))
       .pipe(Gulp.dest('src'));
 
-    const urlEndpointAuthService = process.env.URL_ENDPOINT_AUTH_SERVICE;
+    var urlEndpointAuthService = process.env.URL_ENDPOINT_AUTH_SERVICE;
 
-    if(!urlEndpointAuthService) {
-      console.error('NO ENDPOINT AUTH SERVICE CONFIGURATIONS, check .env file!!!');
-      return;
+    if (!urlEndpointAuthService) {
+      console.log("Setting default urlEndpointAuthService = ''")
+    } else {
+      console.log('CONFIGURATION AUTH SERVICE:\nurlEndpointAuthService:', urlEndpointAuthService);
     }
 
-    printUrlEndpointAuthService(urlEndpointAuthService);
+    console.log('FROM "config/config_app.js" template --> "public/js-app/config_app.js"');
 
-    Gulp.src('config/config_app.js')
+    var stream2 = Gulp.src('config/config_app.js')
       .pipe(build({ URL_ENDPOINT_AUTH_SERVICE: urlEndpointAuthService }))
       .pipe(Gulp.dest('public/js-app'));
+
+    return merge(stream1, stream2);
 
 });
 
