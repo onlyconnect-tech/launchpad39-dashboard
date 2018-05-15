@@ -38,6 +38,10 @@ During `gulp configure` thask .env variable values are substitutes in js files, 
 
 > `gulp dev`
 
+## GENERATE DISTRIBUTION
+
+> `gulp && gulp zip`
+
 ## GENERATE DOC
 
 > `jsdoc -c .\conf.json`
