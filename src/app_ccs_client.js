@@ -18,13 +18,24 @@ const VehicleWatcher = require('./vehicle_watcher');
 const Converter = require('./util/degrees_radiants_utils');
 const MissionValidator = require('./util/mission_validator');
 
-/** controller of the app */
+
 
 /*global angular: true */
 
 // @flow
 
+/** 
+ * controller of the app 
+ * 
+ */
+
 class AppControllerClient {
+
+  /**
+  * Create a point.
+  * @param {scope} scope - The Angular scope.
+  * @param {ConfigMqtt} mqttConfig - Configuration MQTT.
+  */
 
   constructor(scope, mqttConfig) {
     this.scope = scope;
@@ -45,9 +56,12 @@ class AppControllerClient {
   /**
    * start application.
    * 
+   * @param {string} clientID The string to repeat.
+   * @param {string} customerID How many times to repeat the string.
+   * @returns void
    */
 
-  doStartVehicleWatcher(clientID: string, customerID: string) {
+  doStartVehicleWatcher(clientID, customerID) {
     this.vehicleWatcher.activateVehicleWatcher(clientID, customerID);
   }
 

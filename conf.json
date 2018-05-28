@@ -4,8 +4,7 @@
         "dictionaries": ["jsdoc","closure"]
     },
     "source": {
-        "include": ["./src/client.js", "./src/util/degrees_radiants_utils.js", "./src/util/arr_utils.js", 
-            "./src/util/msgs_utils.js", "./src/vehicle_watcher.js", "./src/model_controller_multi.js"],
+        "include": ["./src/vehicle_watcher.js", "./src/model_controller_multi.js"],
         "includePattern": ".+\\.js(doc|x)?$",
         "excludePattern": "(^|\\/|\\\\)_"
     },
